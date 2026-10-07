@@ -1,0 +1,30 @@
+name: Package DLiPA iOS13 Baseline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/dlipa-baseline.yml'
+
+jobs:
+  package:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download official DLiPA v1.4
+        run: |
+          curl -L --fail --retry 3 \
+            https://github.com/AhmedBafkir/DLiPA/releases/download/v1.4/DLiPA_v1.4.ipa \
+            -o DLiPA-iOS13-v1.4.ipa
+          test -s DLiPA-iOS13-v1.4.ipa
+          shasum -a 256 DLiPA-iOS13-v1.4.ipa | tee DLiPA-iOS13-v1.4.sha256
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: DLiPA-iOS13-v1.4
+          path: |
+            DLiPA-iOS13-v1.4.ipa
+            DLiPA-iOS13-v1.4.sha256
