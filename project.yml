@@ -1,0 +1,45 @@
+name: myappios
+
+options:
+  minimumXcodeGenVersion: 2.38.0
+  deploymentTarget:
+    iOS: "13.0"
+
+packages:
+  OpenSSL:
+    url: https://github.com/krzyzanowskim/OpenSSL-Package.git
+    from: 3.6.3000
+
+targets:
+  myappios:
+    type: application
+    platform: iOS
+    deploymentTarget: "13.0"
+    sources:
+      - path: App
+      - path: Vendor/zsign/src
+        excludes:
+          - zsign.cpp
+    dependencies:
+      - package: OpenSSL
+        product: OpenSSL
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zonoe.myappios
+        PRODUCT_NAME: myappios
+        INFOPLIST_FILE: App/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CLANG_CXX_LANGUAGE_STANDARD: c++11
+        CLANG_CXX_LIBRARY: libc++
+        ENABLE_BITCODE: NO
+        HEADER_SEARCH_PATHS:
+          - "$(SRCROOT)/Vendor/zsign/src"
+          - "$(SRCROOT)/Vendor/zsign/src/common"
+          - "$(SRCROOT)/Vendor/zsign/src/third-party/zlib"
+          - "$(SRCROOT)/Vendor/zsign/src/third-party/minizip"
+        GCC_PREPROCESSOR_DEFINITIONS:
+          - "$(inherited)"
+          - "ZSIGN_VERSION=ios-prototype"
+        OTHER_LDFLAGS:
+          - "$(inherited)"
+          - "-lz"
