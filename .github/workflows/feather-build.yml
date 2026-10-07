@@ -18,7 +18,7 @@ jobs:
         run: |
           git clone --recursive https://github.com/claration/feather.git FeatherSource
           cd FeatherSource
-          git checkout 7078b053c0af262809a48e4d3898d42b0d35fedf
+          git checkout 4db3efff0b12dd2ed1ad424edfc4365164fdefc3
           git submodule update --init --recursive
 
       - name: Select Xcode
