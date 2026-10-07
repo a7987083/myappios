@@ -20,19 +20,14 @@
   <true/>
   <key>MinimumOSVersion</key>
   <string>13.0</string>
-  <key>UIApplicationSceneManifest</key>
-  <dict>
-    <key>UIApplicationSupportsMultipleScenes</key>
-    <false/>
-  </dict>
   <key>UIFileSharingEnabled</key>
   <true/>
   <key>LSSupportsOpeningDocumentsInPlace</key>
   <true/>
-  <key>UILaunchStoryboardName</key>
-  <string></string>
   <key>UIRequiredDeviceCapabilities</key>
-  <array><string>arm64</string></array>
+  <array>
+    <string>arm64</string>
+  </array>
   <key>UISupportedInterfaceOrientations</key>
   <array>
     <string>UIInterfaceOrientationPortrait</string>
