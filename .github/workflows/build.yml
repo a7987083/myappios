@@ -1,0 +1,32 @@
+name: Build iOS 13 Prototype
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bootstrap zsign
+        run: sh bootstrap.sh
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        run: xcodegen generate
+      - name: Resolve packages
+        run: xcodebuild -project myappios.xcodeproj -scheme myappios -resolvePackageDependencies
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project myappios.xcodeproj \
+            -scheme myappios \
+            -configuration Debug \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            IPHONEOS_DEPLOYMENT_TARGET=13.0 \
+            build | tee build.log
