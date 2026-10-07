@@ -10,14 +10,19 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+
       - name: Bootstrap zsign
         run: sh bootstrap.sh
+
       - name: Install XcodeGen
         run: brew install xcodegen
+
       - name: Generate project
         run: xcodegen generate
+
       - name: Resolve packages
         run: xcodebuild -project myappios.xcodeproj -scheme myappios -resolvePackageDependencies
+
       - name: Build
         run: |
           set -o pipefail
@@ -27,6 +32,25 @@ jobs:
             -configuration Debug \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
+            -derivedDataPath DerivedData \
             CODE_SIGNING_ALLOWED=NO \
             IPHONEOS_DEPLOYMENT_TARGET=13.0 \
             build | tee build.log
+
+      - name: Package unsigned app
+        if: success()
+        run: |
+          mkdir -p artifact/Payload
+          cp -R DerivedData/Build/Products/Debug-iphoneos/myappios.app artifact/Payload/
+          cd artifact
+          zip -qry ../myappios-ios13-unsigned.ipa Payload
+
+      - name: Upload build output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: myappios-ios13-build
+          path: |
+            build.log
+            myappios-ios13-unsigned.ipa
+          if-no-files-found: ignore
