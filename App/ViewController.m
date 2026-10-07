@@ -1,5 +1,6 @@
 #import "ViewController.h"
 #import "ZSignEngine.h"
+#import "SettingsViewController.h"
 
 typedef NS_ENUM(NSInteger, PickKind) {
     PickKindIPA,
@@ -25,6 +26,7 @@ typedef NS_ENUM(NSInteger, PickKind) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"IPA 签名";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"gearshape"] style:UIBarButtonItemStylePlain target:self action:@selector(openSettings)];
     self.view.backgroundColor = UIColor.systemBackgroundColor;
 
     UIStackView *stack = [[UIStackView alloc] init];
@@ -84,6 +86,11 @@ typedef NS_ENUM(NSInteger, PickKind) {
     label.numberOfLines = 2;
     label.text = text;
     return label;
+}
+
+- (void)openSettings {
+    SettingsViewController *vc = [[SettingsViewController alloc] initWithStyle:UITableViewStyleInsetGrouped];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)selectIPA { self.pickKind = PickKindIPA; [self openPicker]; }
