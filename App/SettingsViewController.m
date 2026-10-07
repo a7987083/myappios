@@ -89,10 +89,6 @@ typedef NS_ENUM(NSInteger, SettingsSection) {
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPathOld:(NSIndexPath *)indexPath {
-    return nil;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
